@@ -1,2 +1,2 @@
 # MonolithicSync
-Syncronizer(Locking) library for Monolithic Applications.
+MonolithicSync is a simple lock management library for .NET monolithic applications.
