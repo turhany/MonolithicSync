@@ -4,6 +4,8 @@
 
 MonolithicSync is a simple lock management library for .NET monolithic applications.
 
+[![NuGet version](https://badge.fury.io/nu/MonolithicSync.svg)](https://badge.fury.io/nu/MonolithicSync)
+
 #### Features:
 - Single key lock
 - Multiple key lock
