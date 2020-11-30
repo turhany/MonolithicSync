@@ -11,3 +11,7 @@ MonolithicSync is a simple lock management library for .NET monolithic applicati
 - Multiple key release
 - Can group locks
 - Can relase locks with group key
+
+### TODOS
+- Add Sample/Test Project
+- Add usage info
