@@ -25,7 +25,7 @@ DI Registration:
   }
 ```
 
-Lock:
+Lock/Release:
 
 ```cs
   public void BestWayToUse()
@@ -56,4 +56,3 @@ Lock:
 
 ### TODOS
 - Add Sample/Test Project
-- Add usage info
