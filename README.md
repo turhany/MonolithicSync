@@ -33,7 +33,7 @@ Lock/Release:
       var groupKey = "group1";
       var lockKey = "key";
 
-      if (_monolithicSync.Lock(groupKey, lockKey))
+      if (!_monolithicSync.Lock(groupKey, lockKey))
       {
           throw new Exception(String.Format(MonolithicSync.Helpers.MonolithicSyncConstants.LockFailMessage, $"{groupKey}-{lockKey}"));
       }
