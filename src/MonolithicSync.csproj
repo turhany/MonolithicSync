@@ -2,6 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>MonolithicSync is a simple lock management library for .NET monolithic applications.</Description>
+    <Company>turhany</Company>
+    <Authors>Türhan Yıldırım</Authors>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/turhany/MonolithicSync</PackageProjectUrl>
+    <PackageIcon>monolithicsync.png</PackageIcon>
+    <RepositoryUrl>https://github.com/turhany/MonolithicSync</RepositoryUrl>
+    <PackageTags>Lock, Syncronizer</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\img\monolithicsync.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
