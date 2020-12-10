@@ -63,6 +63,3 @@ Lock/Release:
 
 ## 1.0.3
 * Relase by Group Key bug fixed.
-
-### TODOS
-- Add Test Project
