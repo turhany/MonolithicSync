@@ -59,7 +59,7 @@ Lock/Release:
 * Broken releases (deprecated)
 
 ## 1.0.2
-* Base Release
+* Base Release (deprecated)
 
 ## 1.0.3
 * Relase by Group Key bug fixed.
