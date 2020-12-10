@@ -53,6 +53,16 @@ Lock/Release:
       }
   }
 ```
+### Release Notes
+
+## 1.0.0 - 1.0.1
+* Broken releases (deprecated)
+
+## 1.0.2
+* Base Release
+
+## 1.0.3
+* Relase by Group Key bug fixed.
 
 ### TODOS
-- Add Sample/Test Project
+- Add Test Project
