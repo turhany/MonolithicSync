@@ -17,6 +17,7 @@ namespace MonolithicSync.Concrete
         private static SemaphoreSlim _waitSlim = new SemaphoreSlim(1, 1);
         private static SemaphoreSlim _waitListSlim = new SemaphoreSlim(1, 1);
         private static SemaphoreSlim _releaseSlim = new SemaphoreSlim(1, 1);
+        private static SemaphoreSlim _releaseGroupsSlim = new SemaphoreSlim(1, 1);
 
         private static string GenerateSlimId(string groupKey, string key) => string.Concat(groupKey, "-", key);
         private static string GenerateSlimIdWithoutKey(string type) => string.Concat(type, "-");
@@ -142,7 +143,7 @@ namespace MonolithicSync.Concrete
         {
             try
             {
-                _releaseSlim.Wait();
+                _releaseGroupsSlim.Wait();
 
                 var slimId = GenerateSlimIdWithoutKey(type);
                 var keys = new List<string>();
@@ -157,7 +158,7 @@ namespace MonolithicSync.Concrete
             }
             finally
             {
-                _releaseSlim.Release();
+                _releaseGroupsSlim.Release();
             }
         }
     }
