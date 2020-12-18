@@ -1,7 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading; 
+using System.Threading;
+using System.Threading.Tasks;
 using MonolithicSync.Abstract;
 using MonolithicSync.Helpers;
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -16,12 +17,77 @@ namespace MonolithicSync.Concrete
         private static readonly ConcurrentDictionary<string, SemaphoreSlim> Slims = new ConcurrentDictionary<string, SemaphoreSlim>();
         private static SemaphoreSlim _waitSlim = new SemaphoreSlim(1, 1);
         private static SemaphoreSlim _waitListSlim = new SemaphoreSlim(1, 1);
+        private static SemaphoreSlim _waitAsyncSlim = new SemaphoreSlim(1, 1);
+        private static SemaphoreSlim _waitListAsyncSlim = new SemaphoreSlim(1, 1);
         private static SemaphoreSlim _releaseSlim = new SemaphoreSlim(1, 1);
         private static SemaphoreSlim _releaseGroupsSlim = new SemaphoreSlim(1, 1);
 
         private static string GenerateSlimId(string groupKey, string key) => string.Concat(groupKey, "-", key);
         private static string GenerateSlimIdWithoutKey(string type) => string.Concat(type, "-");
-        
+
+        /// <inheritdoc />
+        public async Task<bool> LockAsync(string groupKey, string key, int maxCount = 1, int timeout = MonolithicSyncConstants.MillisecondsTimeout)
+        {
+            try
+            {
+                await _waitAsyncSlim.WaitAsync();
+
+                var slimId = GenerateSlimId(groupKey, key);
+                if (!Slims.TryGetValue(slimId, out var currentSlim))
+                {
+                    Slims.TryAdd(slimId, currentSlim = new SemaphoreSlim(1, maxCount));
+                }
+
+                return await currentSlim.WaitAsync(timeout);
+            }
+            finally
+            {
+                _waitAsyncSlim.Release();
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> LockAsync(string groupKey, IEnumerable<string> keys, int maxCount = 1, int timeout = MonolithicSyncConstants.MillisecondsTimeout)
+        {
+            try
+            {
+                await _waitListAsyncSlim.WaitAsync();
+                var lockedItems = new List<LockItem>();
+
+                var result = true;
+                foreach (var key in keys.Distinct())
+                {
+                    result = await LockAsync(groupKey, key, maxCount, timeout) && result;
+                    if (result)
+                    {
+                        lockedItems.Add(new LockItem
+                        {
+                            Key = key,
+                            GroupKey = groupKey
+                        });
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (!result)
+                {
+                    foreach (var lockedItem in lockedItems)
+                    {
+                        Release(lockedItem.GroupKey, lockedItem.Key);
+                    }
+                }
+                lockedItems.Clear();
+                return result;
+            }
+            finally
+            {
+                _waitListAsyncSlim.Release();
+            }
+        }
+
         /// <inheritdoc />
         public bool Lock(string groupKey, string key, int maxCount = 1, int timeout = MonolithicSyncConstants.MillisecondsTimeout)
         {

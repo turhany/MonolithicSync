@@ -9,11 +9,73 @@ namespace MonolithicSync.Samples
         {
             var monolithicSync = new Concrete.MonolithicSync();
 
+            AsyncSingleKeyLockReleaseSample(monolithicSync);
+            AsyncMultipleKeyLockReleaseSample(monolithicSync);
             SingleKeyLockReleaseSample(monolithicSync);
             MultipleKeyLockReleaseSample(monolithicSync);
             ReleaseGroupLockSample(monolithicSync);
 
             Console.ReadLine();
+        }
+
+        private static async void AsyncSingleKeyLockReleaseSample(Concrete.MonolithicSync monolithicSync)
+        {
+            var groupKey = "singleKeyLockGroup";
+            var lockKey = "key";
+
+            if (! (await monolithicSync.LockAsync(groupKey, lockKey)))
+            {
+                throw new Exception(String.Format(MonolithicSync.Helpers.MonolithicSyncConstants.LockFailMessage, $"{groupKey}-{lockKey}"));
+            }
+
+            try
+            {
+                //do something
+                Console.WriteLine($"GroupKey: {groupKey} - LockKey: {lockKey} locked(Async).");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                monolithicSync.Release(groupKey, lockKey);
+                Console.WriteLine($"GroupKey: {groupKey} - LockKey: {lockKey} released.");
+            }
+        }
+
+        private static async void AsyncMultipleKeyLockReleaseSample(Concrete.MonolithicSync monolithicSync)
+        {
+            var groupKey = "multipleKeyLockGroup";
+            var lockKeys = new List<string>() { "key1", "key2", "key3" };
+
+            if (! (await monolithicSync.LockAsync(groupKey, lockKeys)))
+            {
+                throw new Exception(String.Format(MonolithicSync.Helpers.MonolithicSyncConstants.LockFailMessage, $"{groupKey}-{string.Join(",", lockKeys)}"));
+            }
+
+            try
+            {
+                //do something
+                foreach (var lockKey in lockKeys)
+                {
+                    Console.WriteLine($"GroupKey: {groupKey} - LockKey: {lockKey} locked(Async).");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                monolithicSync.Release(groupKey, lockKeys);
+                foreach (var lockKey in lockKeys)
+                {
+                    Console.WriteLine($"GroupKey: {groupKey} - LockKey: {lockKey} released.");
+                }
+            }
         }
 
         private static void SingleKeyLockReleaseSample(Concrete.MonolithicSync monolithicSync)
