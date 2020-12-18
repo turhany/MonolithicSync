@@ -63,3 +63,6 @@ Lock/Release:
 
 ## 1.0.3
 * Relase by Group Key bug fixed.
+
+## 1.0.4
+* Async Lock methods added.
