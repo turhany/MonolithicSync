@@ -55,14 +55,14 @@ Lock/Release:
 ```
 ### Release Notes
 
-## 1.0.0 - 1.0.1
-* Broken releases (deprecated)
-
-## 1.0.2
-* Base Release (deprecated)
+## 1.0.4
+* Async Lock methods added.
 
 ## 1.0.3
 * Relase by Group Key bug fixed.
 
-## 1.0.4
-* Async Lock methods added.
+## 1.0.2
+* Base Release (deprecated)
+
+## 1.0.0 - 1.0.1
+* Broken releases (deprecated)
