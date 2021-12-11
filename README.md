@@ -1,5 +1,3 @@
-#   **MonolithicSync**
-
 ![alt tag](/img/monolithicsync.png)  
 
 MonolithicSync is a simple lock management library for .NET monolithic applications.
